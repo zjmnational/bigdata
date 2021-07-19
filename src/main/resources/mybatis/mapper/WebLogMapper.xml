@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjm.mapper.WebLogMapper">
+    <select id="queryGroupByTime" resultType="GroupByTime">
+        select year,month,day,hour,minutes,count(*) as total from webloginfo group by year,month,day,hour,minutes;
+    </select>
+    <select id="queryGroupByIP" resultType="GroupByIP">
+        select ip,count(*) as total from webloginfo group by ip order by total DESC limit 10;
+    </select>
+</mapper>

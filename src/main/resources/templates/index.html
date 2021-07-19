@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="echarts.min.js"></script>
+    <script src="jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="chart1" style="width: 600px;height:400px;"></div>
+    <div id="chart2" style="width: 600px;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+       
+        $.get("http://localhost:8080/queryGroupbyTime",function(data){
+            var xdata,ydata;
+            xdata = data.keyName;
+            ydata = data.totalList;
+            var myChart = echarts.init(document.getElementById('chart1'));
+        
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '网站访问量随时间变化'
+                },
+                tooltip: {},
+                legend: {
+                    data:['访问量']
+                },
+                xAxis: {
+                    data: xdata
+                },
+                yAxis: {
+                },
+                series: [{
+                    name: '访问量',
+                    type: 'line',
+                    data: ydata
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+        $.get("http://localhost:8080/queryGroupByIP",function(data){
+            var xdata,ydata;
+            xdata = data.totalList;
+            ydata = data.keyName;
+            var myChart = echarts.init(document.getElementById('chart2'));
+        
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '访问来源IP访问次数排名',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['访问次数']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    boundaryGap: [0, 0.01]
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ydata
+                },
+                series: [
+                    
+                    {      
+                        name: '访问次数',           
+                        type: 'bar',
+                        data: xdata
+                    }
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        });
+        
+    </script>
+</body>
+</html>
